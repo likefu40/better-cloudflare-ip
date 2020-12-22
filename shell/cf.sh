@@ -300,34 +300,4 @@ do
 	done
 		break
 done
-	max=$[$max/1024]
-	endtime=`date +'%Y-%m-%d %H:%M:%S'`
-	start_seconds=$(date --date="$starttime" +%s)
-	end_seconds=$(date --date="$endtime" +%s)
-	clear
-	curl --ipv4 --resolve update.freecdn.workers.dev:443:$anycast --retry 3 -s -X POST -d '"CF-IP":"'$anycast'","Speed":"'$max'"' 'https://update.freecdn.workers.dev' -o temp.txt
-	publicip=$(cat temp.txt | grep publicip= | cut -f 2- -d'=')
-	colo=$(cat temp.txt | grep colo= | cut -f 2- -d'=')
-	url=$(cat temp.txt | grep url= | cut -f 2- -d'=')
-	url=$(cat temp.txt | grep url= | cut -f 2- -d'=')
-	app=$(cat temp.txt | grep app= | cut -f 2- -d'=')
-	databasenew=$(cat temp.txt | grep database= | cut -f 2- -d'=')
-	if [ "$app" != "20201208" ]
-	then
-		echo 发现新版本程序: $app
-		echo 更新地址: $url
-		echo 更新后才可以使用
-		exit
-	fi
-	if [ "$databasenew" != "$databaseold" ]
-	then
-		echo 发现新版本数据库: $databasenew
-		mv temp.txt data.txt
-		echo 数据库 $databasenew 已经自动更新完毕
-	fi
-	rm -rf temp.txt
-	echo 优选IP $anycast 满足 $bandwidth Mbps带宽需求
-	echo 峰值速度 $max kB/s
-	echo 公网IP $publicip
-	echo 数据中心 $colo
-	echo 总计用时 $((end_seconds-start_seconds)) 秒
+	
